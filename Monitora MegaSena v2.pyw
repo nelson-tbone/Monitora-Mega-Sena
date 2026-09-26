@@ -6,7 +6,7 @@ from datetime import datetime
 # Configurações de arquivos locais para salvar o estado e ícone
 CONTA_ARQUIVO = "MMS - contador_acumulado v2.txt"
 ULTIMO_CONCURSO_ARQUIVO = "MMS - ultimo_concurso v2.txt"
-ICONE_DO_APP = "icone da caixa.jpg"
+ICONE_DO_APP = os.path.abspath("icone da caixa.ico") 
 
 def ler_dados_caixa():
     # Lista de APIs alternativas para tentar em sequência caso uma falhe
@@ -95,7 +95,8 @@ def main():
     # mensagem de processamento genérico
     mensagem = (
         f"Concurso atual: {numero_concurso}, "
-        f"🚨 Resultado: " if acumulou else "🟢 Resultado: "{resultados}
+        f"{f'🚨 Resultado: ' if acumulou else f'🟢 Resultado: '}"
+        f"{resultados}, "
         f"Último concurso salvo: {ultimo_concurso_salvo}, "
         f"Acumulou: {f'Sim, {contador_atual} vezes' if acumulou else 'Não'},\n"
         f"Data e hora da verificação: {hoje.strftime('%d/%m/%Y %H:%M:%S')}"
@@ -107,7 +108,7 @@ def main():
     if numero_concurso > ultimo_concurso_salvo:
         if acumulou:
             contador_atual += 1
-            # Se acumulou pela terceira vez (ou múltiplos de 3, caso queira continuar monitorando)
+            # Se acumulou pela terceira vez
             if contador_atual >= 3:
                 enviar_notificacao_windows(contador_atual)
         else:
