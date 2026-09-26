@@ -4,6 +4,7 @@ from winotify import Notification
 from datetime import datetime
 
 # Configurações de arquivos locais para salvar o estado e ícone
+# O script, rodando no Task Scheduler, precisa estar lá configurado o parâmetro "Start in" apontando para a pasta onde estão os arquivos de dados, caso contrário, ele não vai conseguir ler/escrever os arquivos.
 CONTA_ARQUIVO = "MMS - contador_acumulado v2.txt"
 ULTIMO_CONCURSO_ARQUIVO = "MMS - ultimo_concurso v2.txt"
 ICONE_DO_APP = os.path.abspath("icone da caixa.ico") 
