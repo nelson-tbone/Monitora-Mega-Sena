@@ -86,6 +86,8 @@ def main():
     hoje = datetime.now()
 
     acumulou, numero_concurso, resultados = ler_dados_caixa()
+    # formata o resultado para exibição na notificação
+    resultados_texto = ", ".join(resultados)
     
     if acumulou is None:
         return  # Falha na leitura, encerra para tentar na próxima execução
@@ -95,12 +97,11 @@ def main():
 
     # mensagem de processamento genérico
     mensagem = (
-        f"Concurso atual: {numero_concurso}, "
-        f"{f'🚨 Resultado: ' if acumulou else f'🟢 Resultado: '}"
-        f"{resultados}, "
-        f"Último concurso salvo: {ultimo_concurso_salvo}, "
-        f"Acumulou: {f'Sim, {contador_atual} vezes' if acumulou else 'Não'},\n"
-        f"Data e hora da verificação: {hoje.strftime('%d/%m/%Y %H:%M:%S')}"
+        f"Concurso: {numero_concurso}\n"
+        f"Resultado: {resultados_texto}\n"
+        #f"Último concurso salvo: {ultimo_concurso_salvo}, "
+        f"{f'🚨' if acumulou else f'🟢'} Acumulou: {f'Sim, {contador_atual} vezes' if acumulou else 'Não'}\n"
+        f"Verificado em: {hoje.strftime('%d/%m/%Y %H:%M')};"
     )
     enviar_notificacao_windows_generica(mensagem)
 
