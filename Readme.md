@@ -1,6 +1,9 @@
 Projeto feito com auxílio da IA, para monitorar resultados da Mega-Sena.
 
 As APIs utilizadas são de domínio público, sugeridas pela IA;
+Créditos e documentação das APIs:
+Vanderson Guidi - https://github.com/guidi/loteria_api
+Guto Alves - https://github.com/guto-alves/loterias-api
 
 A intenção é o Script rodar no Agendador de Tarefas (Task Scheduler) do windows, usando o pythonw.exe; dessa forma ele executa sem abrir nenhuma janela e o que aparece para o "usuário" é somente a notificação com os resultados;
 
@@ -9,7 +12,7 @@ Todos os arquivos de controle ficam gravados na mesma pasta do script, para simp
 O Script executa silenciosamente e apresenta uma notificação no Painel de Notificações do windows com os resultados.
 
 PRE-REQUISITOS:
-* ter o python versão 3.14.2 ou superior instalado e funcionando no seu ambiente;
+* ter o python versão 3.14.2 ou superior instalado e com todas as dependências também instaladas funcionando no seu ambiente;
 
 INSTRUÇÕES DE INSTALAÇÃO:
 1 - Criar uma pasta onde vai ficar o script e seus arquivos;
