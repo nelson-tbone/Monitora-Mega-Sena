@@ -13,7 +13,7 @@ def ler_dados_caixa():
     # Lista de APIs alternativas para tentar em sequência caso uma falhe
     fontes = [
         {"url": "https://api.guidi.dev.br/loteria/megasena/ultimo", "tipo": "guidi"},
-        {"url": "https://loteriascaixa-api.herokuapp.com/api/megasena/latest", "tipo": "herokufix"} 
+        {"url": "https://loteriascaixa-api.herokuapp.com/api/megasena/latest", "tipo": "guto-alves"} 
     ]
     
     for fonte in fontes:
@@ -31,15 +31,17 @@ def ler_dados_caixa():
                     else:
                         acumulou = str(acumulado_val).lower() == "sim"
                     numero_concurso = int(dados.get("numero", 0))
+                    data_concurso = dados.get("dataApuracao", "")
                     resultados = dados.get("listaDezenas", dados.get("dezenas", []))
-                    return acumulou, numero_concurso, resultados
+                    return acumulou, numero_concurso, resultados, data_concurso
                     
-                elif fonte["tipo"] == "herokufix":
+                elif fonte["tipo"] == "guto-alves":
                     # Fallback caso a primeira API falhe
                     acumulou = dados.get("acumulado", False)
                     numero_concurso = int(dados.get("concurso", 0))
+                    data_concurso = dados.get("data", "")
                     resultados = dados.get("dezenas")
-                    return acumulou, numero_concurso, resultados
+                    return acumulou, numero_concurso, resultados, data_concurso
 
         except (requests.exceptions.RequestException, Exception) as e:
             # Se der timeout ou erro em uma, o 'print' avisa e o 'for' pula para a próxima API da lista
@@ -47,7 +49,7 @@ def ler_dados_caixa():
             continue
             
     print("Erro crítico: Todas as fontes de dados falharam ou deram timeout.")
-    return None, None
+    return None, None, None, None
 
 def carregar_valor(arquivo, padrao=0):
     if os.path.exists(arquivo):
@@ -85,7 +87,7 @@ def main():
 
     hoje = datetime.now()
 
-    acumulou, numero_concurso, resultados = ler_dados_caixa()
+    acumulou, numero_concurso, resultados, data_concurso = ler_dados_caixa()
     # formata o resultado para exibição na notificação
     resultados_texto = ", ".join(resultados)
     
@@ -97,7 +99,7 @@ def main():
 
     # mensagem de processamento genérico
     mensagem = (
-        f"Concurso: {numero_concurso}\n"
+        f"Concurso: {numero_concurso} ({data_concurso})\n"
         f"Resultado: {resultados_texto}\n"
         #f"Último concurso salvo: {ultimo_concurso_salvo}, "
         f"{f'🚨' if acumulou else f'🟢'} Acumulou: {f'Sim, {contador_atual} vezes' if acumulou else 'Não'}\n"
